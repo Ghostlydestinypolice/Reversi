@@ -40,7 +40,7 @@ namespace Reversi
 
         private void NieuwSpelKlik(object o, EventArgs e)
         {
-
+            this.Invalidate();
         }
     }
 }
