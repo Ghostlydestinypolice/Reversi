@@ -33,20 +33,20 @@
             this.speelbord = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
-            // button1
+            // NieuwSpel
             // 
             this.NieuwSpel.Location = new System.Drawing.Point(217, 24);
-            this.NieuwSpel.Name = "button1";
+            this.NieuwSpel.Name = "NieuwSpel";
             this.NieuwSpel.Size = new System.Drawing.Size(119, 33);
             this.NieuwSpel.TabIndex = 0;
             this.NieuwSpel.Text = "Nieuw Spel";
             this.NieuwSpel.UseVisualStyleBackColor = true;
             this.NieuwSpel.Click += new System.EventHandler(this.NieuwSpelKlik);
             // 
-            // button2
+            // HelpKnop
             // 
             this.HelpKnop.Location = new System.Drawing.Point(408, 24);
-            this.HelpKnop.Name = "button2";
+            this.HelpKnop.Name = "HelpKnop";
             this.HelpKnop.Size = new System.Drawing.Size(119, 33);
             this.HelpKnop.TabIndex = 1;
             this.HelpKnop.Text = "Help";
@@ -60,6 +60,7 @@
             this.speelbord.Size = new System.Drawing.Size(600, 600);
             this.speelbord.TabIndex = 2;
             this.speelbord.Paint += new System.Windows.Forms.PaintEventHandler(this.PanelTeken);
+            this.speelbord.MouseClick += new System.Windows.Forms.MouseEventHandler(this.speelbord_MouseKlik);
             // 
             // Form1
             // 
