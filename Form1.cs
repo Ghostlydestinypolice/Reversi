@@ -17,6 +17,7 @@ namespace Reversi
         int[,] panelarray = new int[bordgrootte, bordgrootte];
         int steenspeler1 = 1;
         int steenspeler2 = 2;
+        public int beurt;
 
         public Form1()
         {
@@ -60,10 +61,11 @@ namespace Reversi
         private void HelpKlik(object sender, EventArgs e)
         {
             string helptekst = ""; //helptekst toevoegen aan lege string
+            helptekst += "Zet om en om stenen neer.";
             MessageBox.Show(helptekst);
         }
 
-        private void NieuwSpelKlik(object o, EventArgs e)
+        private void NieuwSpelKlik(object o, EventArgs e) //moet alle zetten wissen
         {
             this.Invalidate();
         }
@@ -75,36 +77,51 @@ namespace Reversi
             bool beurt = true;
             if (beurt)
             {
-                panelarray[0, 0] = 1;
+                panelarray[0, 0] = 1; //?
                 beurt = false;
             }
             else
             {
-                panelarray[0, 0] = 2;
+                panelarray[0, 0] = 2; //?
                 beurt = true;
             }
         }
 
-        public int toegestaan() 
+        public bool toegestaan() //checken of er gedraait wordt.
         {
-            return 0;
+            bool zet = false;
+            if () 
+            {
+                zet = true;
+            }
+            return zet;
         }
 
-        public int arrayloop ()
+        public int[,] arrayloop () //moet de array waarde weer geven
         {
+            int y [,]  = [1, 1];
             for (int arrayk = 0; arrayk < bordgrootte; arrayk++)
             {
                 for (int arrayr = 0; arrayr < bordgrootte; arrayr++)
                 {
-                    int y = panelarray[arrayk, arrayr];
+                    y = panelarray[arrayk, arrayr];
                 }
             }
-            return 1; ///TODO: aanpassen
+            return y; ///TODO: aanpassen
         }
 
-        public int draaien () //Parameters?
+        public void draaien () //Parameters?
         {
-            return 1;
+            ;
         }
     }
+
+
+
+    public class stenen
+    {
+        //stenen hun eigen object type maken.
+    }
 }
+
+
