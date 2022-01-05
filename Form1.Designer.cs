@@ -31,6 +31,8 @@
             this.NieuwSpel = new System.Windows.Forms.Button();
             this.HelpKnop = new System.Windows.Forms.Button();
             this.speelbord = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // NieuwSpel
@@ -62,17 +64,38 @@
             this.speelbord.Paint += new System.Windows.Forms.PaintEventHandler(this.PanelTeken);
             this.speelbord.MouseClick += new System.Windows.Forms.MouseEventHandler(this.speelbord_MouseKlik);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(32, 24);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(111, 20);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Score speler 1";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(624, 24);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(111, 20);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Score speler 2";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(778, 744);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.speelbord);
             this.Controls.Add(this.HelpKnop);
             this.Controls.Add(this.NieuwSpel);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -81,6 +104,8 @@
         private System.Windows.Forms.Button NieuwSpel;
         private System.Windows.Forms.Button HelpKnop;
         private System.Windows.Forms.Panel speelbord;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }
 
