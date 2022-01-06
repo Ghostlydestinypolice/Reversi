@@ -33,6 +33,8 @@
             this.speelbord = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.Score1 = new System.Windows.Forms.Label();
+            this.Score2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // NieuwSpel
@@ -82,11 +84,31 @@
             this.label2.TabIndex = 4;
             this.label2.Text = "Score speler 2";
             // 
+            // Score1
+            // 
+            this.Score1.AutoSize = true;
+            this.Score1.Location = new System.Drawing.Point(36, 48);
+            this.Score1.Name = "Score1";
+            this.Score1.Size = new System.Drawing.Size(51, 20);
+            this.Score1.TabIndex = 5;
+            this.Score1.Text = "Score1";
+            // 
+            // Score2
+            // 
+            this.Score2.AutoSize = true;
+            this.Score2.Location = new System.Drawing.Point(624, 48);
+            this.Score2.Name = "Score2";
+            this.Score2.Size = new System.Drawing.Size(51, 20);
+            this.Score2.TabIndex = 6;
+            this.Score2.Text = "Score2";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(778, 744);
+            this.Controls.Add(this.Score2);
+            this.Controls.Add(this.Score1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.speelbord);
@@ -106,6 +128,8 @@
         private System.Windows.Forms.Panel speelbord;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label Score1;
+        private System.Windows.Forms.Label Score2;
     }
 }
 
