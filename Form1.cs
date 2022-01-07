@@ -17,9 +17,7 @@ namespace Reversi
         uint[,] panelarray = new uint[bordgrootte, bordgrootte];
         byte steenspeler1 = 1;
         byte steenspeler2 = 2;
-        public int beurt = 1;
-        bool kleur1 = true;
-        bool kleur2 = false;
+        public uint beurt = 1;
         int arraycol = 0;
         int arrayrij = 0;
         uint score1 = 0;
@@ -30,7 +28,7 @@ namespace Reversi
             InitializeComponent();
         }
 
-        private void PanelTeken(object sender, PaintEventArgs pea) //methode om de startpositie te tekenen
+        private void PanelTeken(object sender, PaintEventArgs pea)
         {
             Graphics gr = pea.Graphics;
             int startpunt = bordgrootte / 2 - 1;
@@ -46,7 +44,19 @@ namespace Reversi
                 gr.DrawLine(Pens.Black, 0, (speelbord.Height -1)/ bordgrootte * n, speelbord.Width, (speelbord.Height -1)/ bordgrootte * n); //Speelbord.Height -1, omdat hij anders buiten het kader valt.
             }
 
-           
+            foreach(uint getal in panelarray)
+            {
+                if (getal == steenspeler1)
+                {
+                    steen s1 = new steen(); //door een andere klasse laten tekenen?
+                }
+                else if (getal == steenspeler2)
+                {
+                    steen s2 = new steen();
+                }
+            }
+            //iets doen met plekken waar een zet mag
+
         }
 
         
@@ -55,18 +65,20 @@ namespace Reversi
         {
             int klikx = mea.X;
             int kliky = mea.Y;
-            bool Beurt1 = true;
-            
+            int arrayrijklik = klikx / (speelbord.Width / bordgrootte);
+            int arraycolklik = kliky / (speelbord.Height /  bordgrootte);
+            panelarray[arrayrijklik, arraycolklik] = beurt;
 
             //event voor beurt verzetten
-            if (Beurt1 == kleur1)
+            if (beurt == steenspeler1)
             {
-                Beurt1 = kleur2;
+                beurt = steenspeler2;
             }
-            else if (Beurt1 == kleur2)
+            else if (beurt == steenspeler2)
             {
-                Beurt1 = kleur1;
+                beurt = steenspeler1;
             }
+            this.Invalidate();
         }
 
         public bool mogelijk () //hoeft niet?
@@ -84,7 +96,7 @@ namespace Reversi
                 {
                     if (panelarray[arraycol, arrayrij] == 0)
                     {
-                        //beurtgetal invullen en dan de volgende stap doen
+                        //beurtgetal virtueel invullen en dan de volgende stap doen
                         //in plaats van methode draaien, magzet naar true.
                     }
                     else if (panelarray[arraycol, arrayrij] == beurt)
@@ -115,7 +127,9 @@ namespace Reversi
         private void HelpKlik(object sender, EventArgs e)
         {
             string helptekst = ""; //helptekst toevoegen aan lege string
-            helptekst += "Zet om en om stenen neer.";
+            helptekst += "Zet om en om stenen neer. ";
+            helptekst += "Iedere zet moet naast een steen van de tegenstander neer zetten. ";
+            helptekst += "En bij iedere zet moet er mistens 1 steen gedraait worden. ";
             MessageBox.Show(helptekst);
         }
 
@@ -157,7 +171,7 @@ namespace Reversi
 
 
 
-    public class stenen : Form1
+    public class steen : Form1
     {
         void Tekenstenen (object o, PaintEventArgs pea)
         {
