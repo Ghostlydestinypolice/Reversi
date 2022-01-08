@@ -1,6 +1,6 @@
 ﻿namespace Reversi
 {
-    partial class Form1
+    partial class MainClass
     {
         /// <summary>
         /// Required designer variable.
@@ -91,7 +91,7 @@
             this.Score1.Name = "Score1";
             this.Score1.Size = new System.Drawing.Size(51, 20);
             this.Score1.TabIndex = 5;
-            this.Score1.Text = "Score1";
+            this.Score1.Text = score(1);
             // 
             // Score2
             // 
@@ -100,7 +100,7 @@
             this.Score2.Name = "Score2";
             this.Score2.Size = new System.Drawing.Size(51, 20);
             this.Score2.TabIndex = 6;
-            this.Score2.Text = "Score2";
+            this.Score2.Text = score(2);
             // 
             // Form1
             // 

@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace Reversi
 {
-    public partial class Form1 : Form 
+    public partial class MainClass : Form 
     {
         public const int bordgrootte = 6;
         public const int vakgrootte = 100;
@@ -18,12 +18,12 @@ namespace Reversi
         byte steenspeler1 = 1;
         byte steenspeler2 = 2;
         public uint beurt = 1;
-        int arraycol = 0;
-        int arrayrij = 0;
         uint score1 = 0;
         uint score2 = 0;
+        int arraycol;
+        int arrayrij;
 
-        public Form1()
+        public MainClass()
         {
             InitializeComponent();
         }
@@ -90,9 +90,9 @@ namespace Reversi
 
         public void BordBerekenen() //in acht richtingen zetten berekenen
         {
-            for (; arraycol < bordgrootte; arraycol++)
+            for (arraycol = 0; arraycol < bordgrootte; arraycol++)
             {
-                for (; arrayrij < bordgrootte; arrayrij++)
+                for (arrayrij = 0; arrayrij < bordgrootte; arrayrij++)
                 {
                     if (panelarray[arraycol, arrayrij] == 0)
                     {
@@ -146,32 +146,43 @@ namespace Reversi
             this.speelbord.Paint += this.PanelTeken; //werkt dit?
         }
 
-        public void score () //event?
+        public string score (int typescore)
         {
             //score berekenen
             score1 = 0; //Score resetten voor telling
             score2 = 0;
-            for (; arraycol < bordgrootte; arraycol++)
+            string resultaat = "";
+            for (arraycol = 0; arraycol < bordgrootte; arraycol++)
             {
-                for (; arrayrij < bordgrootte; arrayrij++)
+                for (arrayrij = 0; arrayrij < bordgrootte; arrayrij++)
                 {
-                    if (panelarray[arraycol,arrayrij] == 1)
+                    if (panelarray[arraycol,arrayrij] == steenspeler1)
                     {
                         score1++;
                     }
-                    else if (panelarray[arraycol, arrayrij] == 2)
+                    else if (panelarray[arraycol, arrayrij] == steenspeler2)
                     {
                         score2++;
                     }
+
+                    if (typescore == steenspeler1)
+                    {
+                        resultaat = score1.ToString();
+                    }
+                    else if(typescore == steenspeler2)
+                    {
+                        resultaat = score2.ToString();
+                    }
                 }
             }
+            return resultaat;
         }
 
     }
 
 
 
-    public class steen : Form1
+    public class steen : MainClass
     {
         void Tekenstenen (object o, PaintEventArgs pea)
         {
