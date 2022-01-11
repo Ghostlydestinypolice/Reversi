@@ -32,7 +32,7 @@ namespace Reversi
         {
             Graphics gr = pea.Graphics;
             int startpunt = bordgrootte / 2 - 1;
-            panelarray[startpunt, startpunt] = steenspeler1;
+            panelarray[startpunt, startpunt] = steenspeler1; //verplaatsen
             panelarray[startpunt + 1, startpunt + 1] = steenspeler1;
             panelarray[startpunt + 1, startpunt] = steenspeler2;
             panelarray[startpunt, startpunt + 1] = steenspeler2;
@@ -45,19 +45,8 @@ namespace Reversi
             }
 
             ///TODO: tekenen
-            foreach(uint getal in panelarray)
-            {
-                if (getal == steenspeler1)
-                {
-                    steen s1 = new steen(); //door een andere klasse laten tekenen?
-                }
-                else if (getal == steenspeler2)
-                {
-                    steen s2 = new steen();
-                }
-            }
-            //iets doen met plekken waar een zet mag
-
+            
+            
         }
 
         
@@ -80,14 +69,10 @@ namespace Reversi
             {
                 beurt = steenspeler1;
             }
+            score();
             Eindspel();
-        }
-
-        public bool mogelijk () //hoeft niet?
-        {
-            bool magzet = false;
-
-            return magzet;
+            speelbord.Invalidate();
+            Beurtlabel.Invalidate();
         }
 
         /// <summary>
@@ -113,7 +98,7 @@ namespace Reversi
                         for (bool doorgaan = true; doorgaan;)//kan beter?
                         {
                             //Checkt buren
-                            if (panelarray[arrayrij,arraycol] != beurt && panelarray[arraycol, arrayrij] != 0)
+                            if (panelarray[arrayrij,arraycol] != beurt && panelarray[arrayrij, arraycol] != 0)
                             {
                                 //doorgaan met dezelfde "formule"
                             }
@@ -139,7 +124,7 @@ namespace Reversi
             }
         }
 
-        public uint richtingentestMB(int rij, int col)
+        public uint richtingentestMB(int rij, int col) //in parameters richtingen
         {
             return panelarray[rij - 1, col];
         }
@@ -254,7 +239,7 @@ namespace Reversi
 
 
 
-    public class steen : MainClass
+    /* public class steen : MainClass // weghalen
     {
         void Tekenstenen (object o, PaintEventArgs pea)
         {
@@ -287,7 +272,7 @@ namespace Reversi
 
             return new Color();
         }
-    }
-}
+    } */
+} 
 
 
