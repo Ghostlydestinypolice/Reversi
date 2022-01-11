@@ -35,6 +35,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.Score1 = new System.Windows.Forms.Label();
             this.Score2 = new System.Windows.Forms.Label();
+            this.Beurtlabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // NieuwSpel
@@ -89,24 +90,34 @@
             this.Score1.AutoSize = true;
             this.Score1.Location = new System.Drawing.Point(36, 48);
             this.Score1.Name = "Score1";
-            this.Score1.Size = new System.Drawing.Size(51, 20);
+            this.Score1.Size = new System.Drawing.Size(67, 20);
             this.Score1.TabIndex = 5;
-            this.Score1.Text = score(1);
+            this.Score1.Text = score1.ToString();
             // 
             // Score2
             // 
             this.Score2.AutoSize = true;
             this.Score2.Location = new System.Drawing.Point(624, 48);
             this.Score2.Name = "Score2";
-            this.Score2.Size = new System.Drawing.Size(51, 20);
+            this.Score2.Size = new System.Drawing.Size(67, 20);
             this.Score2.TabIndex = 6;
-            this.Score2.Text = score(2);
+            this.Score2.Text = score2.ToString();
             // 
-            // Form1
+            // label3
+            // 
+            this.Beurtlabel.AutoSize = true;
+            this.Beurtlabel.Location = new System.Drawing.Point(76, 706);
+            this.Beurtlabel.Name = "Beurtlabel";
+            this.Beurtlabel.Size = new System.Drawing.Size(51, 20);
+            this.Beurtlabel.TabIndex = 7;
+            this.Beurtlabel.Text = beurt.ToString();
+            // 
+            // MainClass
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(778, 744);
+            this.Controls.Add(this.Beurtlabel);
             this.Controls.Add(this.Score2);
             this.Controls.Add(this.Score1);
             this.Controls.Add(this.label2);
@@ -114,7 +125,7 @@
             this.Controls.Add(this.speelbord);
             this.Controls.Add(this.HelpKnop);
             this.Controls.Add(this.NieuwSpel);
-            this.Name = "Form1";
+            this.Name = "MainClass";
             this.Text = "Form1";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -130,6 +141,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label Score1;
         private System.Windows.Forms.Label Score2;
+        private System.Windows.Forms.Label Beurtlabel;
     }
 }
 

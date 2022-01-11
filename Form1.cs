@@ -20,8 +20,8 @@ namespace Reversi
         public uint beurt = 1;
         uint score1 = 0;
         uint score2 = 0;
-        int arraycol;
         int arrayrij;
+        int arraycol;
 
         public MainClass()
         {
@@ -44,6 +44,7 @@ namespace Reversi
                 gr.DrawLine(Pens.Black, 0, (speelbord.Height -1)/ bordgrootte * n, speelbord.Width, (speelbord.Height -1)/ bordgrootte * n); //Speelbord.Height -1, omdat hij anders buiten het kader valt.
             }
 
+            ///TODO: tekenen
             foreach(uint getal in panelarray)
             {
                 if (getal == steenspeler1)
@@ -63,6 +64,7 @@ namespace Reversi
 
         private void speelbord_MouseKlik(object sender, MouseEventArgs mea) //Zetmethode
         {
+            ///KLIK WERKT NIET
             int klikx = mea.X;
             int kliky = mea.Y;
             int arrayrijklik = klikx / (speelbord.Width / bordgrootte);
@@ -78,7 +80,7 @@ namespace Reversi
             {
                 beurt = steenspeler1;
             }
-            this.Invalidate();
+            Eindspel();
         }
 
         public bool mogelijk () //hoeft niet?
@@ -88,26 +90,30 @@ namespace Reversi
             return magzet;
         }
 
+        /// <summary>
+        /// TODO
+        /// </summary>
         public void BordBerekenen() //in acht richtingen zetten berekenen
         {
             for (arraycol = 0; arraycol < bordgrootte; arraycol++)
             {
                 for (arrayrij = 0; arrayrij < bordgrootte; arrayrij++)
                 {
-                    if (panelarray[arraycol, arrayrij] == 0)
+                    if (panelarray[arrayrij, arraycol] == 0)
                     {
                         //beurtgetal virtueel invullen en dan de volgende stap doen
                         //in plaats van methode draaien, magzet naar true.
                     }
-                    else if (panelarray[arraycol, arrayrij] == beurt)
+                    else if (panelarray[arrayrij, arraycol] == beurt)
                     {
-                        //acht keer -1/+1 doen.
+                        //acht keer -1/+1 doen. in een methode vatten
                         //dan vervolgen in dezelfde richting bij een andere kleur.
                         //dan methode draaien.
+
                         for (bool doorgaan = true; doorgaan;)//kan beter?
                         {
                             //Checkt buren
-                            if (panelarray[arraycol,arrayrij] != beurt && panelarray[arraycol, arrayrij] != 0)
+                            if (panelarray[arrayrij,arraycol] != beurt && panelarray[arraycol, arrayrij] != 0)
                             {
                                 //doorgaan met dezelfde "formule"
                             }
@@ -118,9 +124,64 @@ namespace Reversi
             this.Invalidate();
         }
 
+        public uint richtingentestLB(int rij, int col)
+        {
+            return panelarray[rij - 1, col - 1]; // weghalen
+            uint resultaat = panelarray[rij - 1, col - 1];
+            while (resultaat != beurt && resultaat != 0) /// TODO: testen voor een beurt steen
+            {
+                if (panelarray[rij - 1, col - 1] != beurt && panelarray[rij - 1, col - 1] != 0)
+                {
+                    rij -= 1;
+                    col -= 1;
+                    resultaat = panelarray[rij - 1, col - 1];
+                }
+            }
+        }
+
+        public uint richtingentestMB(int rij, int col)
+        {
+            return panelarray[rij - 1, col];
+        }
+
+        public uint richtingentestRB(int rij, int col)
+        {
+            return panelarray[rij - 1, col + 1];
+        }
+        public uint richtingentestLM(int rij, int col)
+        {
+            return panelarray[rij, col - 1];
+        }
+        public uint richtingentestRM(int rij, int col)
+        {
+            return panelarray[rij, col + 1];
+        }
+        public uint richtingentestLO(int rij, int col)
+        {
+            return panelarray[rij + 1, col - 1];
+        }
+        public uint richtingentestMO(int rij, int col)
+        {
+            return panelarray[rij + 1, col];
+        }
+        public uint richtingentestRO(int rij, int col)
+        {
+            return panelarray[rij + 1, col + 1];
+        }
+
         public void draaien ()
         {
-            //steen => beurt
+            ///TODO: steen => beurt
+            for (arraycol = 0; arraycol < bordgrootte; arraycol++)
+            {
+                for (arrayrij = 0; arrayrij < bordgrootte; arrayrij++)
+                {
+                    if (panelarray[arrayrij, arraycol] == 3)
+                    {
+                        panelarray[arrayrij, arraycol] = beurt;
+                    }
+                } 
+            }
             this.Invalidate();
         }
 
@@ -139,43 +200,54 @@ namespace Reversi
             {
                 for (; arrayrij < bordgrootte; arrayrij++)
                 {
-                    panelarray[arraycol, arrayrij] = 0;
+                    panelarray[arrayrij, arraycol] = 0;
                 }
             }    
             this.Invalidate();
             this.speelbord.Paint += this.PanelTeken; //werkt dit?
         }
 
-        public string score (int typescore)
+        public void Eindspel ()
+        {
+            if (score1 + score2 == bordgrootte * bordgrootte)
+            {
+                string eindresultaat = "";
+                if (score1 > score2)
+                {
+                    eindresultaat += "Speler 1 heeft gewonnen";              
+                }
+                else if (score2 > score1)
+                {
+                    eindresultaat += "Speler 2 heeft gewonnen";
+                }
+                MessageBox.Show(eindresultaat);
+            }
+            else
+            {
+                this.Invalidate();
+            }
+        }
+
+        public void score ()
         {
             //score berekenen
             score1 = 0; //Score resetten voor telling
             score2 = 0;
-            string resultaat = "";
             for (arraycol = 0; arraycol < bordgrootte; arraycol++)
             {
                 for (arrayrij = 0; arrayrij < bordgrootte; arrayrij++)
                 {
-                    if (panelarray[arraycol,arrayrij] == steenspeler1)
+                    if (panelarray[arrayrij,arraycol] == steenspeler1)
                     {
                         score1++;
                     }
-                    else if (panelarray[arraycol, arrayrij] == steenspeler2)
+                    else if (panelarray[arrayrij, arraycol] == steenspeler2)
                     {
                         score2++;
                     }
-
-                    if (typescore == steenspeler1)
-                    {
-                        resultaat = score1.ToString();
-                    }
-                    else if(typescore == steenspeler2)
-                    {
-                        resultaat = score2.ToString();
-                    }
                 }
             }
-            return resultaat;
+            this.Invalidate();
         }
 
     }
