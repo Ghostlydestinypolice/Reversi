@@ -22,6 +22,7 @@ namespace Reversi
         uint score2 = 0;
         int arrayrij;
         int arraycol;
+        bool[,] magzet = new bool [bordgrootte, bordgrootte];
 
         public MainClass()
         {
@@ -49,16 +50,28 @@ namespace Reversi
             
         }
 
-        
+
 
         private void speelbord_MouseKlik(object sender, MouseEventArgs mea) //Zetmethode
         {
             ///KLIK WERKT NIET
+            BordBerekenen();
             int klikx = mea.X;
             int kliky = mea.Y;
             int arrayrijklik = klikx / (speelbord.Width / bordgrootte);
-            int arraycolklik = kliky / (speelbord.Height /  bordgrootte);
+            int arraycolklik = kliky / (speelbord.Height / bordgrootte);
+            if (panelarray[arrayrijklik, arraycolklik] == 0 && magzet[arrayrijklik, arraycolklik])
+            {
             panelarray[arrayrijklik, arraycolklik] = beurt;
+            }
+            else if (magzet[arrayrijklik, arraycolklik] == false)
+            {
+                MessageBox.Show("Er wordt zo geen steen gedraait");
+            }
+            else if (panelarray[arrayrijklik, arraycolklik] != 0)
+            {
+                MessageBox.Show("Zet ee steen in een leeg veld");
+            }
 
             //event voor beurt verzetten
             if (beurt == steenspeler1)
@@ -69,16 +82,14 @@ namespace Reversi
             {
                 beurt = steenspeler1;
             }
+            BordBerekenen();
             score();
             Eindspel();
             speelbord.Invalidate();
             Beurtlabel.Invalidate();
         }
 
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public void BordBerekenen() //in acht richtingen zetten berekenen
+        public void BordBerekenen()
         {
             for (arraycol = 0; arraycol < bordgrootte; arraycol++)
             {
@@ -87,72 +98,84 @@ namespace Reversi
                     if (panelarray[arrayrij, arraycol] == 0)
                     {
                         //beurtgetal virtueel invullen en dan de volgende stap doen
-                        //in plaats van methode draaien, magzet naar true.
+                        //in plaats van methode draaien
+                        richtingentest(arrayrij, arraycol, true);
                     }
                     else if (panelarray[arrayrij, arraycol] == beurt)
                     {
-                        //acht keer -1/+1 doen. in een methode vatten
-                        //dan vervolgen in dezelfde richting bij een andere kleur.
-                        //dan methode draaien.
-
-                        for (bool doorgaan = true; doorgaan;)//kan beter?
-                        {
-                            //Checkt buren
-                            if (panelarray[arrayrij,arraycol] != beurt && panelarray[arrayrij, arraycol] != 0)
-                            {
-                                //doorgaan met dezelfde "formule"
-                            }
-                        }
+                        richtingentest(arrayrij, arraycol, false);
+                        draaien();
                     }
                 }
             }
             this.Invalidate();
         }
 
-        public uint richtingentestLB(int rij, int col)
+        public void richtingentest(int rij, int col, bool virtueel)
         {
-            return panelarray[rij - 1, col - 1]; // weghalen
-            uint resultaat = panelarray[rij - 1, col - 1];
-            while (resultaat != beurt && resultaat != 0) /// TODO: testen voor een beurt steen
-            {
-                if (panelarray[rij - 1, col - 1] != beurt && panelarray[rij - 1, col - 1] != 0)
+            int Orij = rij;
+            int Ocol = col;
+            uint[,] gepasseerd = new uint[bordgrootte, bordgrootte];
+            bool bewaar = true; //variabel om bij te houden of er gedraait wordt.
+            // testen of het kan met de bordrand
+                for (int drij = -1; drij < 2; drij++)
                 {
-                    rij -= 1;
-                    col -= 1;
-                    resultaat = panelarray[rij - 1, col - 1];
+                    for (int dcol = -1; dcol < 2; dcol++) //in 9 richtingen: gewonnen snelheid niet opweegt tegen de verloren leesbaarheid
+                    {
+                        rij += drij;
+                        col += dcol;
+                        uint resultaat = panelarray[rij, col]; //out of bound error
+
+                        if (resultaat != beurt && resultaat != 0)
+                        {
+                            gepasseerd[rij, col] = 3;
+                            uint omgekeerdebeurt = resultaat;
+                            while (resultaat == omgekeerdebeurt)
+                            {
+                                rij += drij;
+                                col += dcol;
+                                resultaat = panelarray[rij, col];
+                                if (resultaat == omgekeerdebeurt)
+                                {
+                                    gepasseerd[rij, col] = 3;
+                                }
+                                else if (resultaat == 0)
+                                {
+                                    bewaar = false;
+                                }
+                                else if (resultaat == beurt)
+                                {
+                                    bewaar = true;
+                                }
+
+                            }
+                        }
+                    }
+                }
+            for (int t = 0; t < bordgrootte; t++)
+            {
+                for (int i = 0; i < bordgrootte; i++)
+                {
+                    if (bewaar == true && virtueel == false)
+                    {
+                        if (gepasseerd [t,i] == 3)
+                        {
+                            panelarray[t, i] = gepasseerd[t, i];
+                        }
+                    }
+                    else if (bewaar == false)
+                    {
+                        gepasseerd [t,i] = 0;
+                    }
+                    else if (virtueel == true && bewaar == true)
+                    {
+                        magzet[Orij, Ocol] = true;
+                        gepasseerd[t, i] = 0;
+                    }
                 }
             }
         }
-
-        public uint richtingentestMB(int rij, int col) //in parameters richtingen
-        {
-            return panelarray[rij - 1, col];
-        }
-
-        public uint richtingentestRB(int rij, int col)
-        {
-            return panelarray[rij - 1, col + 1];
-        }
-        public uint richtingentestLM(int rij, int col)
-        {
-            return panelarray[rij, col - 1];
-        }
-        public uint richtingentestRM(int rij, int col)
-        {
-            return panelarray[rij, col + 1];
-        }
-        public uint richtingentestLO(int rij, int col)
-        {
-            return panelarray[rij + 1, col - 1];
-        }
-        public uint richtingentestMO(int rij, int col)
-        {
-            return panelarray[rij + 1, col];
-        }
-        public uint richtingentestRO(int rij, int col)
-        {
-            return panelarray[rij + 1, col + 1];
-        }
+        
 
         public void draaien ()
         {
@@ -176,6 +199,7 @@ namespace Reversi
             helptekst += "Zet om en om stenen neer. ";
             helptekst += "Iedere zet moet naast een steen van de tegenstander neer zetten. ";
             helptekst += "En bij iedere zet moet er mistens 1 steen gedraait worden. ";
+            ///TODO: Hyperlink toevoegen: https://www.jijbent.nl/spelregels/reversi.php
             MessageBox.Show(helptekst);
         }
 
@@ -207,10 +231,6 @@ namespace Reversi
                 }
                 MessageBox.Show(eindresultaat);
             }
-            else
-            {
-                this.Invalidate();
-            }
         }
 
         public void score ()
@@ -232,47 +252,11 @@ namespace Reversi
                     }
                 }
             }
-            this.Invalidate();
+            Score1.Invalidate();
+            Score2.Invalidate();
         }
 
     }
-
-
-
-    /* public class steen : MainClass // weghalen
-    {
-        void Tekenstenen (object o, PaintEventArgs pea)
-        {
-            Graphics gr = pea.Graphics;
-            SolidBrush Steenkleur = new SolidBrush(Color.White);
-            //Kleur aanpassen met if en for
-
-            gr.FillEllipse(Steenkleur, 20, 20, 20, 20); ///aanpassen beide
-            gr.DrawEllipse(Pens.Black, vakgrootte / 5, vakgrootte / 5, vakgrootte / 5, vakgrootte / 5);
-        }
-
-        public Color Kleur (int steenbezit)
-        {
-            int r = 0, b = 0, g = 0;
-            if (steenbezit == 1)
-            {
-                r = 0;
-                b = 0;
-                g = 0;
-            }
-            else if (steenbezit == 2)
-            {
-                r = 255;
-                b = 255;
-                g = 255;
-            }
-            Color steenkleur = new Color();
-            steenkleur = Color.FromArgb(r, b, g);
-
-
-            return new Color();
-        }
-    } */
 } 
 
 
