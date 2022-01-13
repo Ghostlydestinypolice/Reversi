@@ -160,67 +160,79 @@ namespace Reversi
 
         public void richtingentest(int rij, int col, bool virtueel)
         {
-            int Orij = rij;
+            int Orij = rij; //orginele positie
             int Ocol = col;
+            uint resultaat;
             uint[,] gepasseerd = new uint[bordgrootte, bordgrootte];
             bool bewaar = true; //variabel om bij te houden of er gedraait wordt.
-            // testen of het kan met de bordrand
                 for (int drij = -1; drij < 2; drij++)
                 {
                     for (int dcol = -1; dcol < 2; dcol++) //in 9 richtingen: gewonnen snelheid niet opweegt tegen de verloren leesbaarheid
                     {
-                        rij += drij;
-                        col += dcol;
-                        uint resultaat = panelarray[rij, col]; //out of bound error
+                        rij = Orij + drij;
+                        col = Ocol + dcol;
+                        if (rij < bordgrootte && col < bordgrootte && rij >= 0 && col >= 0)
+                        {
+                        resultaat = panelarray[rij, col];
+                        }
+                        else
+                        {
+                        resultaat = 0;
+                        }
+
 
                         if (resultaat != beurt && resultaat != 0)
                         {
                             gepasseerd[rij, col] = 3;
-                            uint omgekeerdebeurt = resultaat;
+                            uint omgekeerdebeurt = resultaat; //resultaat zal nooit iets anders dan de steen van ander zijn 
                             while (resultaat == omgekeerdebeurt)
                             {
                                 rij += drij;
                                 col += dcol;
-                                resultaat = panelarray[rij, col];
-                                if (resultaat == omgekeerdebeurt)
+                                if (rij < bordgrootte && col < bordgrootte && rij >= 0 && col >= 0)
                                 {
-                                    gepasseerd[rij, col] = 3;
+                                    resultaat = panelarray[rij, col];
+                                    if (resultaat == omgekeerdebeurt)
+                                    {
+                                        gepasseerd[rij, col] = 3;
+                                    }
+                                    else if (resultaat == 0)
+                                    {
+                                        bewaar = false;
+                                    }
+                                    else if (resultaat == beurt)
+                                    {
+                                        bewaar = true;
+                                    }
                                 }
-                                else if (resultaat == 0)
+                            }
+                        }
+                    
+                        for (int t = 0; t < bordgrootte; t++) //gepasseerd-array langs gaan
+                        {
+                            for (int i = 0; i < bordgrootte; i++)
+                            {
+                                if (bewaar == true && virtueel == false) //test om te draaien
                                 {
-                                    bewaar = false;
+                                    if (gepasseerd [t,i] == 3)
+                                    {
+                                        panelarray[t, i] = gepasseerd[t, i];
+                                        gepasseerd[t, i] = 0;
+                                    }
                                 }
-                                else if (resultaat == beurt)
+                                else if (bewaar == false) //opgeslagen data wissen
                                 {
-                                    bewaar = true;
+                                    gepasseerd [t,i] = 0;
                                 }
-
+                                else if (virtueel == true && bewaar == true) //test of een zet mag
+                                {
+                                    magzet[Orij, Ocol] = true;
+                                    gepasseerd[t, i] = 0;
+                                }
                             }
                         }
                     }
                 }
-            for (int t = 0; t < bordgrootte; t++)
-            {
-                for (int i = 0; i < bordgrootte; i++)
-                {
-                    if (bewaar == true && virtueel == false)
-                    {
-                        if (gepasseerd [t,i] == 3)
-                        {
-                            panelarray[t, i] = gepasseerd[t, i];
-                        }
-                    }
-                    else if (bewaar == false)
-                    {
-                        gepasseerd [t,i] = 0;
-                    }
-                    else if (virtueel == true && bewaar == true)
-                    {
-                        magzet[Orij, Ocol] = true;
-                        gepasseerd[t, i] = 0;
-                    }
-                }
-            }
         }
         
 
